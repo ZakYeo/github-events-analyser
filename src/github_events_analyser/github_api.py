@@ -1,6 +1,5 @@
-# github_api.py
-
 import requests
+import logging
 
 
 class GitHubAPI:
@@ -24,6 +23,7 @@ class GitHubAPI:
             'Authorization': f'token {token}',
             'Accept': 'application/vnd.github.v3+json'
         }
+        logging.basicConfig(level=logging.INFO)
 
     def get_user_info(self, username):
         """
@@ -35,9 +35,18 @@ class GitHubAPI:
         Returns:
             dict: The user's information.
         """
-        response = requests.get(
-            f'{self.BASE_URL}/users/{username}', headers=self.headers)
-        return response.json()
+        try:
+            response = requests.get(
+                f'{self.BASE_URL}/users/{username}', headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as http_err:
+            logging.error(f'HTTP error occurred: {http_err}')
+            return {"error": str(http_err)}
+        except Exception as err:
+            logging.error(f'Other error occurred: {err}')
+            return {"error": str(err)}
+        else:
+            return response.json()
 
     def get_user_events(self, username, event_type=None):
         """
@@ -50,30 +59,29 @@ class GitHubAPI:
         Returns:
             list: The user's events.
         """
-        response = requests.get(
-            f'{self.BASE_URL}/users/{username}/events', headers=self.headers)
-        events = response.json()
+        try:
+            response = requests.get(
+                f'{self.BASE_URL}/users/{username}/events', headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as http_err:
+            logging.error(f'HTTP error occurred: {http_err}')
+            return {"error": str(http_err)}
+        except Exception as err:
+            logging.error(f'Other error occurred: {err}')
+            return {"error": str(err)}
+        else:
+            events = response.json()
 
-        # If an event type is specified, filter the events
-        if event_type:
-            events = [event for event in events if event['type'] == event_type]
+            # If an event type is specified, filter the events
+            if event_type:
+                events = [event for event in events if event['type'] == event_type]
 
-        return events
+            return events
 
     def get_repo_events(self, username, repo, event_type=None):
         """
         Fetch and display the latest events for a given GitHub repository
-        Filter events using event_type, e.g y "PushEvent" or "PullRequestEvent"
-
-        TODO:
-            - Calculate and display statistics on the number of events per type
-            - Identify the most active GitHub user based on the number of events
-            - Implement error handling for API requests and display appropriate
-            error messages
-            - Use pagination to handle a large number of events and enable the
-            retrieval of more events beyond the initial limit.
-            - Implement sorting options to display events in chronological or
-            reverse-chronological order.
+        Filter events using event_type, e.g by "PushEvent" or "PullRequestEvent"
 
         Args:
             username (str): The owner of the repository.
@@ -83,7 +91,16 @@ class GitHubAPI:
         Returns:
             list: The repository's events.
         """
-        url = f'{self.BASE_URL}/repos/{username}/{repo}/events'
-        response = requests.get(
-            url, headers=self.headers)
-        return response.json()
+        try:
+            url = f'{self.BASE_URL}/repos/{username}/{repo}/events'
+            response = requests.get(
+                url, headers=self.headers)
+            response.raise_for_status()
+        except requests.HTTPError as http_err:
+            logging.error(f'HTTP error occurred: {http_err}')
+            return {"error": str(http_err)}
+        except Exception as err:
+            logging.error(f'Other error occurred: {err}')
+            return {"error": str(err)}
+        else:
+            return response.json()

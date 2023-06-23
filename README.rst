@@ -40,31 +40,35 @@ With the `github-events-analyser` you can:
 - Get a list of events associated with a user
 - Filter events based on event types such as "PushEvent", "PullRequestEvent" and more
 
-===========
 Installation
 ============
 
 You can install `github-events-analyser` using pip:
 
-```bash
-pip install github-events-analyser
-```
+.. code-block:: bash
 
-======================
+    pip install github-events-analyser
+
 Usage
-======================
+=====
+
 To fetch user information:
 
-`github-events-analyser --token your_github_token user-info github_username`
+.. code-block:: bash
+
+    github-events-analyser --token your_github_token user-info github_username
 
 To fetch and filter user events:
 
-`github-events-analyser --token your_github_token user-events github_username --event-type PushEvent`
+.. code-block:: bash
 
-Replace your_github_token with your personal access token from GitHub and github_username with the username you want to fetch information for.
+    github-events-analyser --token your_github_token user-events github_username --event-type PushEvent
 
+Replace `your_github_token` with your personal access token from GitHub and `github_username` with the username you want to fetch information for.
 
-======================
+.. _pyscaffold-notes:
+
 Note
-======================
+====
+
 This project has been set up using PyScaffold 4.5. For details and usage information on PyScaffold see https://pyscaffold.org/.

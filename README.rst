@@ -21,11 +21,24 @@ With the `github-events-analyser` you can:
 Installation
 ============
 
-You can install `github-events-analyser` using pip:
+To install `github-events-analyser`, first clone the repository:
 
 .. code-block:: bash
 
-    pip install github-events-analyser
+    git clone https://github.com/<USER>/github-events-analyser.git
+
+Then, navigate into the project directory:
+
+.. code-block:: bash
+
+    cd github-events-analyser
+
+And install the required dependencies:
+
+.. code-block:: bash
+
+    pip install -r requirements.txt
+
 
 Usage
 =====

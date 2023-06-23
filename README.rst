@@ -39,8 +39,7 @@ And install the required dependencies:
 
     pip install -r requirements.txt
 
-
-Usage
+CLI Usage
 =====
 
 To fetch user information:
@@ -58,6 +57,39 @@ To fetch and filter user events:
 Replace `your_github_token` with your personal access token from GitHub and `github_username` with the username you want to fetch information for.
 
 .. _pyscaffold-notes:
+
+Module Usage
+===============
+
+You can also use the `github-events-analyser` as a module in your own Python projects. The `GitHubAPI` class provides easy-to-use methods for accessing user and repository event data from GitHub. 
+
+Here is a basic usage example:
+
+.. code-block:: python
+
+    from github_events_analyser.github_api import GitHubAPI
+
+    # Initialize the API with your GitHub token
+    api = GitHubAPI('<your GitHub token>')
+
+    # Fetch user information
+    user_info = api.get_user_info('<username>')
+    print(user_info)
+
+    # Fetch user events
+    user_events = api.get_user_events('<username>')
+    print(user_events)
+
+    # Fetch specific user events (for example, only PushEvents)
+    push_events = api.get_user_events('<username>', 'PushEvent')
+    print(push_events)
+
+    # Fetch repository events
+    repo_events = api.get_repo_events('<username>', '<repo name>')
+    print(repo_events)
+
+Remember to replace `'<your GitHub token>'`, `'<username>'`, and `'<repo name>'` with your actual GitHub token, GitHub username, and repository name, respectively. Also, ensure you have the required permissions for the GitHub token to access private repositories and user data.
+
 
 Note
 ====

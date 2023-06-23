@@ -25,7 +25,7 @@ To install `github-events-analyser`, first clone the repository:
 
 .. code-block:: bash
 
-    git clone https://github.com/<USER>/github-events-analyser.git
+    git clone https://github.com/ZakYeo/github-events-analyser.git
 
 Then, navigate into the project directory:
 

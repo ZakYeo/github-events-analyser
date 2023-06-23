@@ -22,13 +22,13 @@ With GitHub Events Analyser, you can:
 Installation
 ============
 
-To install GitHub Events Analyser, clone the repository, navigate into the project directory, and install the required dependencies:
+To install GitHub Events Analyser, clone the repository, navigate into the project directory, and install the package along with its dependencies:
 
 .. code-block:: bash
 
     git clone https://github.com/ZakYeo/github-events-analyser.git
     cd github-events-analyser
-    pip install -r requirements.txt
+    pip install .
 
 CLI Usage
 =========
@@ -91,7 +91,7 @@ To run the unit tests for this project, follow these steps:
     cd github-events-analyser
 
     # Install the package in editable mode along with its dependencies
-    pip install -e .
+    pip install -e .[testing]
 
     # Run the unit tests
     python -m unittest discover tests

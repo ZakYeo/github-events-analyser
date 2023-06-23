@@ -13,10 +13,10 @@ class TestGitHubAPI(unittest.TestCase):
         setUp runs before each test case. Here, it's used to set up some
         common variables and a GitHubAPI instance.
         """
-        self.token = 'test_token'
+        self.token = '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'
         self.api = GitHubAPI(self.token)
-        self.username = 'test_username'
-        self.repo = 'test_repo'
+        self.username = 'ZakYeo'
+        self.repo = 'github-events-analyser'
         self.event_type = 'PushEvent'
 
     @patch('github_events_analyser.github_api.requests.get')
@@ -58,11 +58,13 @@ class TestGitHubAPI(unittest.TestCase):
         """
         # Mock the response from requests.get
         mock_resp = Mock()
-        expected_result = [{'type': self.event_type}]
+        expected_result = [{'asd': self.event_type}]
         mock_resp.json.return_value = expected_result
         mock_get.return_value = mock_resp
 
         result = self.api.get_repo_events(self.username, self.repo, self.event_type)
+        print(result)
+        print(expected_result)
 
         # Assert that the function returns the expected result
         self.assertEqual(result, expected_result)

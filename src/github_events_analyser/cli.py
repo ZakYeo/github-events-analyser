@@ -18,8 +18,43 @@ def user_events(args):
 
 def repo_events(args):
     api = GitHubAPI(args.token)
-    events = api.get_repo_events(args.username, args.repo, args.event_type)
-    print(events)
+    # Create a dictionary to count the amount of events
+    event_counter = {event: 0 for event in api.EVENTS}
+    # Create a dictionary to tally events from users
+    user_counter = {}
+    total_events = 0
+    response_events = api.get_repo_events(args.username, args.repo, args.event_type)
+    json_resp = response_events.json()
+    print(f"Repository Events For: {args.repo}")
+
+    for item in json_resp:
+        event_counter[item['type']] += 1
+        try:
+            description = item['payload']['description']
+        except KeyError:
+            # Description does not exist, use message instead
+            # Can be multiple messages, so concatenate all
+            description = ""
+            for commit in item['payload']['commits']:
+
+                description += commit["message"]
+            description = description.replace("\n", " || ")
+        total_events += 1
+        # Add one to the tally for this user
+        user = item['actor']['display_login']
+        try:
+            user_counter[user] += 1
+        except KeyError:
+            # Does not exist yet, create it
+            user_counter[user] = 1
+
+        print(
+            f"""{item['type']} By {item['actor']['display_login']} at {item['created_at']} || {description}""")
+    print(f"Total Events {total_events}: ", end='')
+    print(', '.join([f"{k}: {v}" for k, v in event_counter.items() if v > 0]))
+    most_active_user = max(user_counter, key=user_counter.get)
+    print(
+        f"Most Active User In This Repo: {most_active_user} at {user_counter[most_active_user]} events")
 
 
 def main():

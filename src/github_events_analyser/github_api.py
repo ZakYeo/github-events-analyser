@@ -11,6 +11,11 @@ class GitHubAPI:
     """
 
     BASE_URL = 'https://api.github.com'
+    EVENTS = ["CommitCommentEvent", "CreateEvent", "DeleteEvent", "ForkEvent",
+              "GollumEvent", "IssueCommentEvent", "IssuesEvent", "MemberEvent",
+              "PublicEvent", "PullRequestEvent", "PullRequestReviewEvent",
+              "PullRequestReviewCommentEvent", "PullRequestReviewThreadEvent",
+              "PushEvent", "ReleaseEvent", "SponsorshipEvent", "WatchEvent"]
 
     def __init__(self, token):
         """
@@ -83,6 +88,12 @@ class GitHubAPI:
         Fetch and display the latest events for a given GitHub repository
         Filter events using event_type, e.g by "PushEvent" or "PullRequestEvent"
 
+        TODO:
+            - Use pagination to handle a large number of events and enable the
+            retrieval of more events beyond the initial limit.
+            - Implement sorting options to display events in chronological or
+            reverse-chronological order.
+
         Args:
             username (str): The owner of the repository.
             repo (str): The repository name.
@@ -103,4 +114,4 @@ class GitHubAPI:
             logging.error(f'Other error occurred: {err}')
             return {"error": str(err)}
         else:
-            return response.json()
+            return response

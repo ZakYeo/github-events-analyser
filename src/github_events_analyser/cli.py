@@ -14,11 +14,14 @@ def repo_events(args):
     response_events = api.get_repo_events(
         args.username, args.repo, args.per_page, args.page)
     json_resp = response_events.json()
-    if (args.order.lower().startswith("d")):  # Descending, reverse order
+    if (args.order and args.order.lower().startswith("d")):  # Descending, reverse order
         json_resp = reversed(json_resp)
     print(f"Repository Events For: {args.repo}")
 
     for item in json_resp:
+        if (args.event_type and item['type'] != args.event_type):
+            # Filter
+            continue
         event_counter[item['type']] += 1
         try:
             description = item['payload']['description']
@@ -62,6 +65,8 @@ def main():
         'username', help='GitHub username to fetch events for')
     parser_repo_events.add_argument(
         'repo', help='GitHub repository to fetch events for')
+    parser_repo_events.add_argument(
+        '--event-type', help='Type of events to display e.g., "PushEvent", "PullRequestEvent"')
     parser_repo_events.add_argument(
         '--per-page', help='Number of events to display per page (max 100)')
     parser_repo_events.add_argument('--page', help='Page number to display')

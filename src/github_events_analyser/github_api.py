@@ -88,12 +88,6 @@ class GitHubAPI:
         Fetch and display the latest events for a given GitHub repository
         Filter events using event_type, e.g by "PushEvent" or "PullRequestEvent"
 
-        TODO:
-            - Use pagination to handle a large number of events and enable the
-            retrieval of more events beyond the initial limit.
-            - Implement sorting options to display events in chronological or
-            reverse-chronological order.
-
         Args:
             username (str): The owner of the repository.
             repo (str): The repository name.

@@ -30,59 +30,6 @@ class GitHubAPI:
         }
         logging.basicConfig(level=logging.INFO)
 
-    def get_user_info(self, username):
-        """
-        Fetches information about a GitHub user.
-
-        Args:
-            username (str): The GitHub username.
-
-        Returns:
-            dict: The user's information.
-        """
-        try:
-            response = requests.get(
-                f'{self.BASE_URL}/users/{username}', headers=self.headers)
-            response.raise_for_status()
-        except requests.HTTPError as http_err:
-            logging.error(f'HTTP error occurred: {http_err}')
-            return {"error": str(http_err)}
-        except Exception as err:
-            logging.error(f'Other error occurred: {err}')
-            return {"error": str(err)}
-        else:
-            return response.json()
-
-    def get_user_events(self, username, event_type=None):
-        """
-        Fetches events associated with a GitHub user.
-
-        Args:
-            username (str): The GitHub username.
-            event_type (str, optional): The type of event to fetch.
-
-        Returns:
-            list: The user's events.
-        """
-        try:
-            response = requests.get(
-                f'{self.BASE_URL}/users/{username}/events', headers=self.headers)
-            response.raise_for_status()
-        except requests.HTTPError as http_err:
-            logging.error(f'HTTP error occurred: {http_err}')
-            return {"error": str(http_err)}
-        except Exception as err:
-            logging.error(f'Other error occurred: {err}')
-            return {"error": str(err)}
-        else:
-            events = response.json()
-
-            # If an event type is specified, filter the events
-            if event_type:
-                events = [event for event in events if event['type'] == event_type]
-
-            return events
-
     def get_repo_events(self, username, repo, per_page=30, page=1):
         """
         Fetch and display the latest events for a given GitHub repository

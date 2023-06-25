@@ -1,104 +1,63 @@
-.. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
-    :alt: Project generated with PyScaffold
-    :target: https://pyscaffold.org/
+=============
+GitHub Events Analyzer
+=============
 
-|
-
-=================================
-GitHub Events Analyser
-=================================
-
-GitHub Events Analyser is a Python-based command-line interface for fetching and analyzing events data from GitHub.
+This is a simple Python package that provides an easy interface to the GitHub API for fetching repository events. It includes a command line interface (CLI) for fetching and analyzing events from a specific GitHub repository.
 
 Features
 ========
 
-With GitHub Events Analyser, you can:
+- Fetch events from any public GitHub repository.
+- Count the different types of events in the repository.
+- Identify the most active user in the repository based on the number of events.
 
-* Retrieve information about a specific GitHub user.
-* Get a list of events associated with a user.
-* Filter events based on event types such as "PushEvent", "PullRequestEvent" and more.
+Usage
+=====
 
-Installation
-============
-
-To install GitHub Events Analyser, clone the repository, navigate into the project directory, and install the package along with its dependencies:
-
-.. code-block:: bash
-
-    git clone https://github.com/ZakYeo/github-events-analyser.git
-    cd github-events-analyser
-    pip install .
-
-CLI Usage
-=========
-
-Here are examples of how to use the command-line interface:
-
-.. code-block:: bash
-
-    # To fetch user information:
-    github-events-analyser --token your_github_token user-info github_username
-
-    # To fetch and filter user events:
-    github-events-analyser --token your_github_token user-events github_username --event-type PushEvent
-
-Replace `your_github_token` with your personal access token from GitHub, and `github_username` with the username you want to fetch information for.
-
-Module Usage
-============
-
-You can also use GitHub Events Analyser as a module in your Python projects. The `GitHubAPI` class provides methods for accessing user and repository event data from GitHub.
-
-Here's a basic usage example:
+As a Module
+-----------
+The GitHub API interface can be used in your own Python scripts. Here is a basic usage example:
 
 .. code-block:: python
 
     from github_events_analyser.github_api import GitHubAPI
+    
+    # Initialize the GitHubAPI object
+    api = GitHubAPI('YOUR_GITHUB_TOKEN')
+    
+    # Fetch the events of a repository
+    response = api.get_repo_events('USERNAME', 'REPO')
+    
+    # Process the response here...
 
-    # Initialize the API with your GitHub token
-    api = GitHubAPI('your_github_token')
+Command Line Interface (CLI)
+----------------------------
 
-    # Fetch user information
-    user_info = api.get_user_info('github_username')
-    print(user_info)
+The CLI provides a way to fetch and analyze GitHub events directly from the command line. 
 
-    # Fetch user events
-    user_events = api.get_user_events('github_username')
-    print(user_events)
+To fetch the events of a repository:
 
-    # Fetch specific user events (for example, only PushEvents)
-    push_events = api.get_user_events('github_username', 'PushEvent')
-    print(push_events)
+.. code-block:: shell
 
-    # Fetch repository events
-    repo_events = api.get_repo_events('github_username', 'repo_name')
-    print(repo_events)
+    python cli.py repo-events --token YOUR_GITHUB_TOKEN USERNAME REPO
 
-Replace `'your_github_token'`, `'github_username'`, and `'repo_name'` with your actual GitHub token, GitHub username, and repository name, respectively.
+Arguments:
 
-Running Unit Tests
-==================
+- `USERNAME`: The GitHub username to fetch events for.
+- `REPO`: The GitHub repository to fetch events for.
+- `--per-page`: (Optional) Number of events to display per page (max 100).
+- `--event-type`: (Optional) The type of event to fetch. e.g., "PushEvent", "PullRequestEvent".
+- `--page`: (Optional) Page number to display.
+- `--order`: (Optional) Chronological order of events. Enter 'a' for ascending or 'd' for descending order.
 
-To run the unit tests for this project, follow these steps:
+Running Tests
+=============
 
-.. code-block:: bash
+To run the tests:
 
-    # Clone the repository
-    git clone https://github.com/ZakYeo/github-events-analyser.git
+.. code-block:: shell
 
-    # Navigate to the root directory of the project
-    cd github-events-analyser
+    python -m unittest
 
-    # Install the package in editable mode along with its dependencies
-    pip install -e .[testing]
+Ensure that you are in the top level directory (same level as the tests directory) when running this command.
 
-    # Run the unit tests
-    python -m unittest discover tests
-
-If the tests run successfully, you'll see output indicating the number of tests run and that all tests passed. If any tests fail, you'll see output indicating which tests failed and a traceback to where in the code the failure occurred.
-
-Notes
-=====
-
-This project has been set up using PyScaffold 4.5. For details and usage information on PyScaffold see https://pyscaffold.org/.

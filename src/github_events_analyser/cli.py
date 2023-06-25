@@ -26,6 +26,8 @@ def repo_events(args):
     response_events = api.get_repo_events(
         args.username, args.repo, args.per_page, args.page)
     json_resp = response_events.json()
+    if (args.order.lower().startswith("d")):  # Descending, reverse order
+        json_resp = reversed(json_resp)
     print(f"Repository Events For: {args.repo}")
 
     for item in json_resp:
@@ -85,6 +87,8 @@ def main():
     parser_repo_events.add_argument(
         '--per-page', help='Number of events to display per page (max 100)')
     parser_repo_events.add_argument('--page', help='Page number to display')
+    parser_repo_events.add_argument(
+        '--order', help='Ascending or descending chronological order')
     parser_repo_events.set_defaults(func=repo_events)
 
     args = parser.parse_args()

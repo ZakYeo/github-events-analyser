@@ -16,7 +16,7 @@ class TestGitHubAPI(unittest.TestCase):
         setUp runs before each test case. It's used to set up some
         common variables and a GitHubAPI instance for the tests.
         """
-        self.token = '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'
+        self.token = ''  # Place your GitHub token here before running unit tests
         self.api = GitHubAPI(self.token)
         self.username = 'ZakYeo'
         self.repo = 'github-events-analyser'

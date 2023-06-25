@@ -23,7 +23,8 @@ def repo_events(args):
     # Create a dictionary to tally events from users
     user_counter = {}
     total_events = 0
-    response_events = api.get_repo_events(args.username, args.repo, args.event_type)
+    response_events = api.get_repo_events(
+        args.username, args.repo, args.per_page, args.page)
     json_resp = response_events.json()
     print(f"Repository Events For: {args.repo}")
 
@@ -52,9 +53,13 @@ def repo_events(args):
             f"""{item['type']} By {item['actor']['display_login']} at {item['created_at']} || {description}""")
     print(f"Total Events {total_events}: ", end='')
     print(', '.join([f"{k}: {v}" for k, v in event_counter.items() if v > 0]))
-    most_active_user = max(user_counter, key=user_counter.get)
-    print(
-        f"Most Active User In This Repo: {most_active_user} at {user_counter[most_active_user]} events")
+    try:
+        most_active_user = max(user_counter, key=user_counter.get)
+        print(
+            f"Most Active User In This Repo: {most_active_user} at {user_counter[most_active_user]} events")
+    except ValueError:
+        # user_counter is empty, so cannot use max().
+        pass
 
 
 def main():
@@ -77,7 +82,9 @@ def main():
         'username', help='GitHub username to fetch events for')
     parser_repo_events.add_argument(
         'repo', help='GitHub repository to fetch events for')
-    parser_repo_events.add_argument('--event-type', help='Type of events to fetch')
+    parser_repo_events.add_argument(
+        '--per-page', help='Number of events to display per page (max 100)')
+    parser_repo_events.add_argument('--page', help='Page number to display')
     parser_repo_events.set_defaults(func=repo_events)
 
     args = parser.parse_args()

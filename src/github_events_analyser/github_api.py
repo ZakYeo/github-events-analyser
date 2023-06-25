@@ -83,7 +83,7 @@ class GitHubAPI:
 
             return events
 
-    def get_repo_events(self, username, repo, event_type=None):
+    def get_repo_events(self, username, repo, per_page=30, page=1):
         """
         Fetch and display the latest events for a given GitHub repository
         Filter events using event_type, e.g by "PushEvent" or "PullRequestEvent"
@@ -103,7 +103,7 @@ class GitHubAPI:
             list: The repository's events.
         """
         try:
-            url = f'{self.BASE_URL}/repos/{username}/{repo}/events'
+            url = f'{self.BASE_URL}/repos/{username}/{repo}/events?page={page}&per_page={per_page}'
             response = requests.get(
                 url, headers=self.headers)
             response.raise_for_status()

@@ -23,16 +23,18 @@ def repo_events(args):
             # Filter
             continue
         event_counter[item['type']] += 1
-        try:
-            description = item['payload']['description']
-        except KeyError:
-            # Description does not exist, use message instead
-            # Can be multiple messages, so concatenate all
-            description = ""
-            for commit in item['payload']['commits']:
+        description = ""
+        if (item['payload'] != {}):
+            try:
+                description = item['payload']['description']
+            except KeyError:
+                # Description does not exist, use message instead
+                # Can be multiple messages, so concatenate all
+                description = ""
+                for commit in item['payload']['commits']:
 
-                description += commit["message"]
-            description = description.replace("\n", " || ")
+                    description += commit["message"]
+                description = description.replace("\n", " || ")
         total_events += 1
         # Add one to the tally for this user
         user = item['actor']['display_login']
